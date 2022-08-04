@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -61,9 +61,14 @@ export default {
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: 'mdi-book-variant',
           title: 'Categorias',
           to: '/categories'
+        }, 
+        {
+          icon: 'mdi-food',
+          title: 'Itens',
+          to: '/items'
         }
       ],
       miniVariant: false,
