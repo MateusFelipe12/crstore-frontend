@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 style="color:aquamarine ;">Consulta de Categoria</h1>
+    <h1 style="color:aquamarine ;">Menu Categorias</h1>
     <hr>
     <v-container>
       <v-row>
@@ -93,7 +93,7 @@ export default {
 
     async destroy (categories) {
       try {
-        if (confirm(`Deseja deletar a categoria ${categories.id} - ${categories.name}?`)) {
+        if (confirm(`Deseja deletar ${categories.id} - ${categories.name}?`)) {
           let response = await this.$axios.$post('http://localhost:3333/category/destroy', { id: categories.id });
           this.$toast(response.message)
           return this.getCategories();
