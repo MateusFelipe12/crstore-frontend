@@ -62,8 +62,9 @@
 </template>
 
 <script>
-name: 'IndexitemPage'
 export default {
+  layout: 'menu',
+  name: 'IndexitemPage',
   data () {
     return {
       valid: false,

@@ -38,6 +38,7 @@
 
 <script>
 export default {
+  layout: 'menu',
   name: 'IndexCategoryPage',
   data () {
     return {
@@ -87,7 +88,8 @@ created () {
     async getCategory (id) {
      try {
         this.category  = (await this.$axios.$get(`http://localhost:3333/category/${id}`)).data ;
-        console.log(this.category);
+
+
      } catch (error) {
       this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
      }

@@ -17,12 +17,13 @@
         <v-text-field
           v-model="login.password"
           outlined
+          type="password"
           color="black"
           background-color="black"
           placeholder="Senha"
           :rules="rule"
-        /><a href="/users" style="font-size:80%; color: #1aa5f; font-family: 'Oswald', sans-serif;">Esqueci minha senha</a>
-        <p>Ainda não tem uma conta?<a href="/users/register" style="font-size:50%%; color:#1aa5f; font-family: 'Oswald', sans-serif;">Registre-se</a></p>
+        /><a href="/users/updatePassword" style="font-size:80%; color: #1aa5f; font-family: 'Oswald', sans-serif;">Esqueci minha senha</a>
+        <p>Ainda não tem uma conta?<a href="/users/register" style="font-size:80%; color:#1aa5f; font-family: 'Oswald', sans-serif;">Registre-se</a></p>
         <v-btn 
         style="width:220px; "
         color="black"
@@ -57,7 +58,7 @@ export default {
         if(!this.valid) {
           return this.$toast.error(`Insira nome de usuario e senha`);
         }
-        let response = await this.$api.post(`/users/login`, {username: this.login.username, password: this.login.password })
+        let response = await this.$api.post(`/users/login`, { username: this.login.username, password: this.login.password })
         
         if(response.data.type == "error") {
           return this.$toast.warning(response.data.message)

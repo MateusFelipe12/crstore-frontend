@@ -107,7 +107,7 @@ export default {
           phone: this.login.phone,
           role: this.login.rule || 'Custumer' 
           })
-          console.log(response);
+
         if(response.data.type == "error") {
           return this.$toast.warning(response.data.message)
         }

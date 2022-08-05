@@ -55,7 +55,10 @@
 </template>
 
 <script>
+import { delay } from 'q';
+
 export default {
+  layout: 'menu',
   name: 'IndexCategoriesPage',
   data () {
     return {

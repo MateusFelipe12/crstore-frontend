@@ -1,4 +1,4 @@
-<template>
+  <template>
   <v-container>
     <h1 style="color:aquamarine ;">MENU ITENS</h1>
     <hr>
@@ -56,6 +56,7 @@
 
 <script>
 export default {
+  layout: 'menu',
   name: 'IndexItemsPage',
   data () {
     return {
