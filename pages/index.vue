@@ -1,28 +1,31 @@
 <template>
   <v-container style="margin:5%; text-align:center">
-    <h1>Seja bem vindo a CRStore</h1>
-   <v-container style="background-color:dimgrey; border-radius:1%; width: 300px">
+    <h1 style="color: dodgerblue;">Seja bem vindo a CRStore</h1>
+   <v-container style="background-color:darkgray ; border-radius:1%; width: 400px">
       <v-form v-model="valid">
-        <v-container style="width: 250px ;">
+        <v-container style="width: 300px ;">
           <br>
            <v-text-field
           v-model="login.username"
           outlined
+          color="black"
+          background-color="black"
           :rules="rule"
           placeholder="Nome de usuario"
+          style=": black;"
         />
         <v-text-field
           v-model="login.password"
           outlined
+          color="black"
+          background-color="black"
           placeholder="Senha"
           :rules="rule"
-        /><a bind-href="/users" style="font-size:80%; color: #1aa5f; font-family: 'Oswald', sans-serif;">Esqueci minha senha</a>
-        <br>
-        <a bind-href="/users" style="font-size:90%; color:cornflowerblue; font-family: 'Oswald', sans-serif;">Registre-se</a>
-        <br>
-        <br>
+        /><a href="/users" style="font-size:80%; color: #1aa5f; font-family: 'Oswald', sans-serif;">Esqueci minha senha</a>
+        <p>Ainda não tem uma conta?<a href="/users/register" style="font-size:50%%; color:#1aa5f; font-family: 'Oswald', sans-serif;">Registre-se</a></p>
         <v-btn 
         style="width:220px; "
+        color="black"
         @click="register()"
         >Entrar</v-btn>
         </v-container>
@@ -43,9 +46,9 @@ export default {
       ],
       valid: false,
       login: {
-      username: '',
-      password: ''
-  },
+        username: '',
+        password: ''
+      },
     }
   },
   methods:{
@@ -61,8 +64,13 @@ export default {
         }
         this.$toast.success(response.data.message);
         localStorage.setItem('crstore-token', response.data.token)
-        return this.$router.push('/');
-
+        
+        if(response.data.typeUser == 'admin'){
+          return this.$router.push('/admin');
+        }
+        if(response.data.typeUser == 'delivery'){
+          return this.$router.push('/delivery');
+        }
       } catch (error) {
         console.log(error.message);
         return this.$toast.error("Ocorreu um erro, contate o administrador")

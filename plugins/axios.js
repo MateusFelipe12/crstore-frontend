@@ -7,10 +7,10 @@ export default function ({ $axios }, inject) {
       common: {
         Authorization: `Bearer ${token}`
       }
-    }
+    },
   })
 
   api.setBaseURL('http://localhost:3333')
-
+  Response = Response.data  
   inject('api', api)
 }

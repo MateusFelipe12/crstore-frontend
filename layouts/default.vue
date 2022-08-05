@@ -30,7 +30,7 @@
       app
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <h3 style="color:aliceblue">CRStore</h3>
+      <h3 style="color: #1aa5f">CRStore</h3>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -58,7 +58,7 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'Welcome',
-          to: '/'
+          to: '/products'
         },
         {
           icon: 'mdi-book-variant',

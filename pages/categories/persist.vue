@@ -37,8 +37,8 @@
 </template>
 
 <script>
-name: 'IndexCategoryPage'
 export default {
+  name: 'IndexCategoryPage',
   data () {
     return {
       valid: false,
@@ -64,6 +64,14 @@ created () {
       try {
         if(!this.valid) {
          return this.$toast.error(`Preencha todos os campos`)
+        }
+        if(!this.item.id){
+          let response = await this.$axios.$post(`http://localhost:3333/category/persist`, { name: this.category.name });
+          if(response.type == 'error'){
+            console.log(response.message);
+            return this.$toast.error(`Ocorreu um erro, contate o administrador`)
+          }
+          this.$toast.success(`Cadastro realizado com sucesso`)
         }
         let response = await this.$axios.$post(`http://localhost:3333/category/persist`, { name: this.category.name });
         if(response.type == 'error'){

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 style="color:aquamarine ;">Menu Categorias</h1>
+    <h1 style="color:#1aa5f ;">Menu Categorias</h1>
     <hr>
     <v-container>
       <v-row>
