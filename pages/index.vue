@@ -1,85 +1,96 @@
 <template>
-  <v-container style="margin:5%; text-align:center">
-    <h1 style="color: dodgerblue;">Seja bem vindo a CRStore</h1>
-   <v-container style="background-color:darkgray ; border-radius:1%; width: 400px">
-      <v-form v-model="valid">
-        <v-container style="width: 300px ;">
-          <br>
-           <v-text-field
-          v-model="login.username"
-          outlined
-          color="black"
-          background-color="black"
-          :rules="rule"
-          placeholder="Nome de usuario"
-          style=": black;"
-        />
+<v-container>
+  <h1 style="color:aquamarine ;">Produtos</h1>
+  <v-container>
+    <v-row>
+      <v-col cols="6">
         <v-text-field
-          v-model="login.password"
-          outlined
-          type="password"
-          color="black"
-          background-color="black"
-          placeholder="Senha"
-          :rules="rule"
-        /><a href="/users/updatePassword" style="font-size:80%; color: #1aa5f; font-family: 'Oswald', sans-serif;">Esqueci minha senha</a>
-        <p>Ainda não tem uma conta?<a href="/users/register" style="font-size:80%; color:#1aa5f; font-family: 'Oswald', sans-serif;">Registre-se</a></p>
-        <v-btn 
-        style="width:220px; "
-        color="black"
-        @click="register()"
-        >Entrar</v-btn>
-        </v-container>
-      </v-form>
-   </v-container>
+          v-model="search"
+          label="Search"
+          class="mx-4"
+        />
+      </v-col>
+    </v-row>
+    <hr>
   </v-container>
+  <v-container>
+    <v-row>
+      <v-card
+        v-for="item of items"
+        :key="item.id"
+        max-width="344px"
+        style="margin: 5px"
+      >
+      <v-img
+        :src="item.img"
+        alt="nan"
+        max-height="150"
+        max-width="250"
+        style="align-items:center;"
+      />
+        <v-card-title>
+          {{item.name}}
+        </v-card-title>
+        <v-card-subtitle>
+          {{item.price}}
+        </v-card-subtitle>
+        <v-card-actions>
+          <v-text-field
+          type="number"
+          v-model="item.quantidade"
+          style="width: 10px;"
+          />
+          <v-btn
+            color="green"
+            text
+            @click="addCart(item)"
+          >
+            <v-icon>
+              mdi-cart-plus
+            </v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-row>
+  </v-container>
+</v-container>
 </template>
 
 <script>
 export default {
-  layout: 'login',
-  name: 'IndexPage',
-  data () {
-    return {
-      valid: false,
-      rule: [
-        v => !!v || "Campo obrigatorio"
-      ],
-      valid: false,
-      login: {
-        username: '',
-        password: ''
-      },
+layout: 'menu',
+name: 'IndexItemsPage',
+data () {
+  return {
+    search: '',
+    items: [],
+  }
+},
+created () {
+  this.getItems ()
+},
+methods: {
+  async getItems () {
+    try {
+      let items = await this.$axios.$get('http://localhost:3333/items');
+      this.items = items.data
+    } catch (error) {
+      this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
     }
   },
-  methods:{
-    async register () {
-      try {
-        if(!this.valid) {
-          return this.$toast.error(`Insira nome de usuario e senha`);
-        }
-        let response = await this.$api.post(`/users/login`, { username: this.login.username, password: this.login.password })
-        
-        if(response.data.type == "error") {
-          return this.$toast.warning(response.data.message)
-        }
-        this.$toast.success(response.data.message);
-        localStorage.setItem('crstore-token', response.data.token)
-        
-        if(response.data.typeUser == 'admin'){
-          return this.$router.push('/admin');
-        }
-        if(response.data.typeUser == 'delivery'){
-          return this.$router.push('/delivery');
-        }
-      } catch (error) {
-        console.log(error.message);
-        return this.$toast.error("Ocorreu um erro, contate o administrador")
+  async addCart (item) {
+    try {
+      console.log(item);
+      if(!item) {
+        return this.$toast.error(`Informe o item que deseja adicionar ao carrinho`)
       }
+      let response = await this.$axios.$post('http://localhost:3333/cart/persist', { item, update: true });
+      console.log(response.message);
+      
+    } catch (error) {
+      this.$toast.error(`Ocorreu um erro ao salvar, contate o administrador`)
     }
   }
 }
+}
 </script>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600&family=Oswald:wght@600&display=swap');
-</style>

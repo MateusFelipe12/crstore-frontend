@@ -1,6 +1,6 @@
-  <template>
+<template>
   <v-container>
-    <h1 style="color:aquamarine ;">MENU ITENS</h1>
+    <h1 style="color:#1aa5f ;">Menu Categorias</h1>
     <hr>
     <v-container>
       <v-row>
@@ -20,13 +20,12 @@
             mdi-folder-plus-outline       
           </v-icon>
         </v-col>
-        
       </v-row>
     </v-container>
     <v-container>
       <v-data-table
         :headers="headers"
-        :items="items"
+        :items="categories"
         class="elevation-1"
         item-key="Titulo"
         :search="search"
@@ -55,13 +54,15 @@
 </template>
 
 <script>
+import { delay } from 'q';
+
 export default {
   layout: 'menu',
-  name: 'IndexItemsPage',
+  name: 'IndexCategoriesPage',
   data () {
     return {
       search: '',
-      items: [],
+      categories: [],
       headers: [
         {
           text: 'Código', 
@@ -75,57 +76,44 @@ export default {
           sortable: false,
           value: 'name'
         },
-        {
-          text: 'Preço',
-          align: 'center',
-          sortable: false,
-          value: 'price'
-        },
-             {
-          text: 'Categoria',
-          align: 'center',
-          sortable: false,
-          value: 'idCategory'
-        },
-
         { text: "", value: "actions" },
       ]
     }
   },
   created () {
-    this.getItems ()
+    this.getCategories ()
   },
   methods: {
-    async getItems () {
+    async getCategories () {
       try {
-        let items = await this.$axios.$get('http://localhost:3333/items');
-        this.items = items.data
+        let categories = await this.$axios.$get('http://localhost:3333/category');
+        this.categories = categories.data
       } catch (error) {
         this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
       }
     },
 
-    async destroy (items) {
+    async destroy (categories) {
       try {
-        if (confirm(`Deseja deletar ${items.id} - ${items.name}?`)) {
-          let response = await this.$axios.$post('http://localhost:3333/items/destroy', { id: items.id });
+        if (confirm(`Deseja deletar ${categories.id} - ${categories.name}?`)) {
+          let response = await this.$axios.$post('http://localhost:3333/category/destroy', { id: categories.id });
           this.$toast(response.message)
-          return this.getItems();
+          return this.getCategories();
        }
       } catch (error) {
-         this.$toast.error(`Ocorreu um erro ao deletar a categoria id ${items.id}, contate o administrador`)
+         this.$toast.error(`Ocorreu um erro ao deletar a categoria id ${categories.id}, contate o administrador`)
       }
      },
-    async persist (item) {
+    async persist (category) {
       try {
-        if(item){
+        if(category){
           return this.$router.push({
-          name: 'items-persist',
-          params: { id: item.id }
+          name: 'admin-categories-persist',
+          params: { id: category.id }
         });
         }
         return this.$router.push({
-          name: 'items-persist'
+          name: 'admin-categories-persist'
         });
       } catch (error) {
         this.$toast.error(`Ocorreu um erro ao acessar, contate o administrador`)

@@ -100,7 +100,6 @@ export default {
           cpf: this.cpf,
           phone: this.phone
         })
-          console.log(`sim`);
         if(response.data.type == 'error'){
           return this.$toast.error(`Algum dos campos nao coincidem com o seu perfil`)
         }

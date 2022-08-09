@@ -45,6 +45,7 @@
           v-model="login.password"
           outlined
           color="black"
+          type="password"
           background-color="black"
           placeholder="Senha"
           :rules="rule"
@@ -53,6 +54,7 @@
           v-model="login.validPass"
           outlined
           color="black"
+          type="password"
           background-color="black"
           placeholder="Confirme sua senha"
           :rules="rule"

@@ -23,6 +23,13 @@
     />
     <v-text-field
       outlined
+      label="URL imagem"
+      placeholder="URL imagem"
+      v-model="item.img"
+      :rules="rule"
+    />
+    <v-text-field
+      outlined
       label="Preço"
       placeholder="Preço"
       v-model="item.price"
@@ -73,6 +80,7 @@ export default {
         id: null,
         name: '',
         price: null,
+        img: null,
         idCategory: null
       },
       rule: [
@@ -102,12 +110,17 @@ created () {
             id: this.item.id,
             name: this.item.name, 
             price: this.item.price,
+            img: this.item.img,
             idCategory: this.item.idCategory
           });
+
           if(response.type == 'error'){
             console.log(response.message);
             return this.$toast.error(`Ocorreu um erro, contate o administrador`)
           }
+          this.$router.push({
+            name: 'admin-items'
+          });
           return this.$toast.success(`Cadastro realizado com sucesso`)
       
       } catch (error) {

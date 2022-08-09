@@ -29,7 +29,7 @@
     </v-btn>
      <v-btn
     outlined
-    to="/categories"
+    to="/admin/categories"
     >
       Cancelar
     </v-btn>
@@ -60,26 +60,27 @@ created () {
     }
   },
   methods: {
-
     async persist () {
       try {
         if(!this.valid) {
          return this.$toast.error(`Preencha todos os campos`)
         }
-        if(!this.item.id){
+        if(!this.category.id){
           let response = await this.$axios.$post(`http://localhost:3333/category/persist`, { name: this.category.name });
           if(response.type == 'error'){
             console.log(response.message);
             return this.$toast.error(`Ocorreu um erro, contate o administrador`)
           }
-          this.$toast.success(`Cadastro realizado com sucesso`)
+          return this.$toast.success(`Cadastro realizado com sucesso`)
         }
-        let response = await this.$axios.$post(`http://localhost:3333/category/persist`, { name: this.category.name });
+
+        let response = await this.$axios.$post(`http://localhost:3333/category/persist`, {id:this.category.id,  name: this.category.name });
         if(response.type == 'error'){
           console.log(response.message);
           return this.$toast.error(`Ocorreu um erro, contate o administrador`)
         }
-        this.$toast.success(`Cadastro realizado com sucesso`)
+        return this.$toast.success(`Cadastro realizado com sucesso`)
+
       } catch (error) {
         console.log(error.message);
         return this.$toast.error(`Ocorreu um erro, contate o administrador`)
@@ -88,8 +89,6 @@ created () {
     async getCategory (id) {
      try {
         this.category  = (await this.$axios.$get(`http://localhost:3333/category/${id}`)).data ;
-
-
      } catch (error) {
       this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
      }

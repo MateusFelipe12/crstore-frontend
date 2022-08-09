@@ -58,17 +58,17 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'Welcome',
-          to: '/products'
+          to: '/'
         },
         {
           icon: 'mdi-book-variant',
           title: 'Categorias',
-          to: '/categories'
+          to: '/admin/categories'
         }, 
         {
           icon: 'mdi-food',
           title: 'Itens',
-          to: '/items'
+          to: '/admin/items'
         }
       ],
       miniVariant: false,
@@ -84,10 +84,9 @@ export default {
     async validation () {
       try {
         let response = await this.$api.post(`/users/validation/typeuser`)
-
         if(response.data.type != 'success') {
           this.$toast('Você não possui autorização para acessar esse recurso')
-          return this.$router.push('/')
+          return this.$router.push('/users')
         }
           return this.$toast(response.data.message);
       } catch (error) {
