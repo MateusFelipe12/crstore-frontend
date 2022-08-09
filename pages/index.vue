@@ -11,7 +11,7 @@
         />
       </v-col>
     </v-row>
-    <hr>
+    <hr style="color:aquamarine">
   </v-container>
   <v-container>
     <v-row>
@@ -23,7 +23,7 @@
       >
       <v-img
         :src="item.img"
-        alt="nan"
+        alt="Imagem"
         max-height="150"
         max-width="250"
         style="align-items:center;"
@@ -34,12 +34,16 @@
         <v-card-subtitle>
           {{item.price}}
         </v-card-subtitle>
+          <v-card-title>
+          {{item.price * item.quantidade || ' '}}
+        </v-card-title>
         <v-card-actions>
           <v-text-field
           type="number"
           v-model="item.quantidade"
           style="width: 10px;"
           />
+          <v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer>
           <v-btn
             color="green"
             text
@@ -72,8 +76,7 @@ created () {
 methods: {
   async getItems () {
     try {
-      let items = await this.$axios.$get('http://localhost:3333/items');
-      this.items = items.data
+      this.items = (await this.$api.get(`/items`)).data
     } catch (error) {
       this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
     }
@@ -84,8 +87,9 @@ methods: {
       if(!item) {
         return this.$toast.error(`Informe o item que deseja adicionar ao carrinho`)
       }
-      let response = await this.$axios.$post('http://localhost:3333/cart/persist', { item, update: true });
-      console.log(response.message);
+      item.quantidade = item.quantidade ? item.quantidade : 1;
+      let response = await this.$api.post(`/cart/persist`, { items: item })
+      console.log(response);
       
     } catch (error) {
       this.$toast.error(`Ocorreu um erro ao salvar, contate o administrador`)

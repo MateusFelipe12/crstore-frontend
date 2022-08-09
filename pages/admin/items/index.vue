@@ -98,8 +98,7 @@ export default {
   methods: {
     async getItems () {
       try {
-        let items = await this.$axios.$get('http://localhost:3333/items');
-        this.items = items.data
+        this.items = (await this.$api.get(`/items`)).data;
       } catch (error) {
         this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
       }
@@ -108,7 +107,7 @@ export default {
     async destroy (items) {
       try {
         if (confirm(`Deseja deletar ${items.id} - ${items.name}?`)) {
-          let response = await this.$axios.$post('http://localhost:3333/items/destroy', { id: items.id });
+          let response = await this.$api.$post('/items/destroy', { id: items.id });
           this.$toast(response.message)
           return this.getItems();
        }

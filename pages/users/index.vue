@@ -28,7 +28,15 @@
         style="width:220px; "
         color="black"
         @click="register()"
-        >Entrar</v-btn>
+        >
+           <v-progress-circular v-if="logando"
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+          <span v-else>
+            Entrar
+          </span>
+        </v-btn>
         </v-container>
       </v-form>
    </v-container>
@@ -50,29 +58,37 @@ export default {
         username: '',
         password: ''
       },
+      logando: false
     }
   },
   methods:{
     async register () {
       try {
+        this.logando = true;
         if(!this.valid) {
           return this.$toast.error(`Insira nome de usuario e senha`);
         }
-        let response = await this.$api.post(`/users/login`, { username: this.login.username, password: this.login.password })
+        let response= await this.$api.post(`/users/login`, { username: this.login.username, password: this.login.password })
         
-        if(response.data.type == "error") {
-          return this.$toast.warning(response.data.message)
+        if(response.type == "error") {
+          return this.$toast.warning(response.message)
         }
-        this.$toast.success(response.data.message);
-        localStorage.setItem('crstore-token', response.data.token)
-        if(response.data.typeUser == 'Admin'){
+        this.$toast.success(response.message);
+        
+        setTimeout(async () => {
+           await localStorage.setItem('crstore-token', response.token)
+        }, 1000);
+        
+        console.log(response);
+        if(response.typeUser == 'Admin'){
           return this.$router.push('./');
         }
-        if(response.data.typeUser == 'delivery'){
+        if(response.typeUser == 'delivery'){
           return this.$router.push('/delivery');
         }
         return
       } catch (error) {
+        this.logando = false;
         console.log(error.message);
         return this.$toast.error("Ocorreu um erro, contate o administrador")
       }

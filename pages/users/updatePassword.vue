@@ -100,12 +100,12 @@ export default {
           cpf: this.cpf,
           phone: this.phone
         })
-        if(response.data.type == 'error'){
+        if(response.type == 'error'){
           return this.$toast.error(`Algum dos campos nao coincidem com o seu perfil`)
         }
         this.nextPass = true;
-        this.id = response.data.data
-        return this.$toast.success(response.data.message)
+        this.id = response
+        return this.$toast.success(response.message)
 
       } catch (error) {
         console.log(error.message);
@@ -125,10 +125,10 @@ export default {
           password: this.newPassword,
           id: this.id
         })
-        if(response.data.type == 'error') {
+        if(response.type == 'error') {
           return this.$toast.error(`Ocorreu um erro ao salvar a nova senha`)
         } else{
-          this.$toast.success(response.data.message);
+          this.$toast.success(response.message);
           return this.$router.push('/');
         }
 

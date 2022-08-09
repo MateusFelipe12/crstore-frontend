@@ -86,8 +86,7 @@ export default {
   methods: {
     async getCategories () {
       try {
-        let categories = await this.$axios.$get('http://localhost:3333/category');
-        this.categories = categories.data
+        this.categories =( await this.$api.get(`/category`)).data
       } catch (error) {
         this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
       }
@@ -96,7 +95,7 @@ export default {
     async destroy (categories) {
       try {
         if (confirm(`Deseja deletar ${categories.id} - ${categories.name}?`)) {
-          let response = await this.$axios.$post('http://localhost:3333/category/destroy', { id: categories.id });
+          let response = await this.$api.post(`/category/destroy`, { id: categories.id })
           this.$toast(response.message)
           return this.getCategories();
        }

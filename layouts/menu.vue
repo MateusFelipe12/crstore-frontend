@@ -31,6 +31,15 @@
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <h3 style="color: #1aa5f">CRStore</h3>
+      <v-spacer></v-spacer>
+      <v-btn
+      text
+      to="/users/cart"
+      style="float: right;">
+        <v-icon>
+          mdi-cart-arrow-right
+        </v-icon>
+      </v-btn>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -47,6 +56,8 @@
 </template>
 
 <script>
+import { delay } from 'q'
+
 export default {
   name: 'MenuLayout',
   data () {
@@ -83,16 +94,19 @@ export default {
   methods: {
     async validation () {
       try {
-        let response = await this.$api.post(`/users/validation/typeuser`)
-        if(response.data.type != 'success') {
+  
+        let response = await this.$api.post(`/users/validation/typeuser`) 
+        if(response.type != 'success') {
           this.$toast('Você não possui autorização para acessar esse recurso')
+          console.log(response);
           return this.$router.push('/users')
         }
-          return this.$toast(response.data.message);
+          return this.$toast(response.message);
       } catch (error) {
+        console.log(error.message);
         return this.$toast('/')
       }
-    }
+    },   
   }
 }
 </script>

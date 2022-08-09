@@ -106,7 +106,7 @@ created () {
          return this.$toast.error(`Preencha todos os campos`)
         }
     
-          let response = await this.$axios.$post(`http://localhost:3333/items/persist`, {
+          let response = await this.$api.$post(`/items/persist`, {
             id: this.item.id,
             name: this.item.name, 
             price: this.item.price,
@@ -130,14 +130,14 @@ created () {
     },
     async getitem (id) {
      try {
-        this.item  = (await this.$axios.$get(`http://localhost:3333/items/${id}`)).data 
+        this.item  = await this.$api.$get(`/items/${id}`) 
      } catch (error) {
       this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
      }
     },
      async getCategories () {
       try {
-        this.categories =( await this.$axios.$get('http://localhost:3333/category')).data;  
+        this.categories = await this.$api.$get('/category')
       } catch (error) {
         this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
       }

@@ -66,15 +66,14 @@ created () {
          return this.$toast.error(`Preencha todos os campos`)
         }
         if(!this.category.id){
-          let response = await this.$axios.$post(`http://localhost:3333/category/persist`, { name: this.category.name });
+          let response = await this.$api.post(`/category/persist`, { name: this.category.name})
           if(response.type == 'error'){
             console.log(response.message);
             return this.$toast.error(`Ocorreu um erro, contate o administrador`)
           }
           return this.$toast.success(`Cadastro realizado com sucesso`)
         }
-
-        let response = await this.$axios.$post(`http://localhost:3333/category/persist`, {id:this.category.id,  name: this.category.name });
+        let response = await this.$api.post(`/category/persist`, { id:this.category.id,  name: this.category.name})
         if(response.type == 'error'){
           console.log(response.message);
           return this.$toast.error(`Ocorreu um erro, contate o administrador`)
@@ -88,7 +87,7 @@ created () {
     },
     async getCategory (id) {
      try {
-        this.category  = (await this.$axios.$get(`http://localhost:3333/category/${id}`)).data ;
+        this.category = await this.$api.get(`/category/${id}`);
      } catch (error) {
       this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
      }

@@ -110,11 +110,11 @@ export default {
           role: this.login.rule || 'Custumer' 
           })
 
-        if(response.data.type == "error") {
-          return this.$toast.warning(response.data.message)
+        if(response.type == "error") {
+          return this.$toast.warning(response.message)
         }
-        this.$toast.success(response.data.message);
-        localStorage.setItem('crstore-token', response.data.token)
+        this.$toast.success(response.message);
+        localStorage.setItem('crstore-token', response.token)
         return this.$router.push('/');
 
       } catch (error) {
