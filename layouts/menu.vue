@@ -57,6 +57,7 @@
 
 <script>
 import { delay } from 'q'
+import addressVue from '~/pages/users/address.vue'
 
 export default {
   name: 'MenuLayout',
@@ -80,7 +81,12 @@ export default {
           icon: 'mdi-food',
           title: 'Itens',
           to: '/admin/items'
-        }
+        }, 
+        {  
+          icon: 'mdi-map-marker',
+          title: 'Endereços',
+          to: '/users/address'
+        },
       ],
       miniVariant: false,
       right: true,

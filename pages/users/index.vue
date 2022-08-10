@@ -77,9 +77,8 @@ export default {
         
         setTimeout(async () => {
            await localStorage.setItem('crstore-token', response.token)
-        }, 1000);
+        }, 5000);
         
-        console.log(response);
         if(response.typeUser == 'Admin'){
           return this.$router.push('./');
         }

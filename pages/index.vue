@@ -83,14 +83,12 @@ methods: {
   },
   async addCart (item) {
     try {
-      console.log(item);
       if(!item) {
         return this.$toast.error(`Informe o item que deseja adicionar ao carrinho`)
       }
       item.quantidade = item.quantidade ? item.quantidade : 1;
       let response = await this.$api.post(`/cart/persist`, { items: item })
-      console.log(response);
-      
+      return this.$toast.success(`O ${item.name} foi adicionado ao carrinho`)
     } catch (error) {
       this.$toast.error(`Ocorreu um erro ao salvar, contate o administrador`)
     }

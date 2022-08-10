@@ -34,6 +34,7 @@
           type="number"
           v-model="item[7]"
           style="width: 10px;"
+          @click="addItem(item)"
           />
           <v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer>
           <v-btn
@@ -47,6 +48,14 @@
       </v-card>
     </v-row>
   </v-container>
+ <v-spacer></v-spacer>
+      <v-btn
+      v-if="items ? items.length: null"
+      text
+      to="/users/order"
+      style="float: right;">
+        Finalizar compra
+      </v-btn>
 </v-container>
 </template>
 
@@ -73,45 +82,52 @@ methods: {
       if(cart.type == 'error'){
         this.$toast.warning(cart.message)
       }
-
+      
       let items = cart.items
       let response  = [];
+      this.total = 0;
       items.forEach(item => {
         let aux = Object.values(item)
         this.items.push(aux);
         this.total += aux[3] * aux[7]
       });
+      return
     } catch (error) {
       console.log(error.message);
       this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
     }
   },
-  async addCart (item) {  
+
+  async remove (item) {
     try {
       if(!item) {
-        return this.$toast.error(`Informe o item que deseja adicionar ao carrinho`)
+        return this.$toast.error(`Informe o item que deseja remover do carrinho`)
       }
-      let response = await this.$api.post(`/cart/persist`, { items: item })
-     
+      let newCart = []
+      this.items = this.items.forEach(items => {
+        items != item ? newCart.push(items) : null;
+      })
+      let response = await this.$api.post(`/cart/remove`, { items: newCart })
+       
+      return this.getItems()
 
     } catch (error) {
       console.log(error.message);
       this.$toast.error(`Ocorreu um erro ao salvar, contate o administrador`)
     }
-  },
-  async remove (item) {
+    },
+  async addItem (item) {
     try {
-      console.log(item);
       if(!item) {
         return this.$toast.error(`Informe o item que deseja adicionar ao carrinho`)
       }
       let newCart = []
       this.items = this.items.forEach(items => {
-        items == item ? newCart.push(items) : null;
+        items != item ? newCart.push(items) :  newCart.push(item);
       })
       let response = await this.$api.post(`/cart/remove`, { items: newCart })
-       await this.getItems()
-       location.reload()
+
+      return this.getItems()
     } catch (error) {
       console.log(error.message);
       this.$toast.error(`Ocorreu um erro ao salvar, contate o administrador`)
