@@ -1,16 +1,13 @@
 export default function ({ $axios }, inject) {
-  
-  const token = localStorage.getItem('crstore-token') || '';
+  const api = $axios.create();
 
-  const api = $axios.create({
-    headers: {
-      common: {
-        Authorization: `Bearer ${token}`
-      }
-    },
-  })
+  api.onRequest(() => {
+    const token = localStorage.getItem('crstore-token') || '';
+    api.setHeader('Authorization', `Bearer ${token}`);
+  });
+
   api.onResponse(response => response.data);
   api.setBaseURL('http://localhost:3333')
-  
+
   inject('api', api)
 }

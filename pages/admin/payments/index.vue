@@ -1,6 +1,6 @@
-  <template>
+<template>
   <v-container>
-    <h1 style="color:aquamarine ;">MENU ITENS</h1>
+    <h1 style="color:#1aa5f ;">Menu Pagamentos</h1>
     <hr>
     <v-container>
       <v-row>
@@ -20,13 +20,12 @@
             mdi-folder-plus-outline       
           </v-icon>
         </v-col>
-        
       </v-row>
     </v-container>
     <v-container>
       <v-data-table
         :headers="headers"
-        :items="items"
+        :items="payments"
         class="elevation-1"
         item-key="Titulo"
         :search="search"
@@ -55,13 +54,14 @@
 </template>
 
 <script>
+
 export default {
   layout: 'menu',
-  name: 'IndexItemsPage',
+  type: 'IndexpaymentsPage',
   data () {
     return {
       search: '',
-      items: [],
+      payments: [],
       headers: [
         {
           text: 'Código', 
@@ -70,61 +70,48 @@ export default {
           value: 'id',
         },
         {
-          text: 'Nome',
+          text: 'Tipo',
           align: 'center',
           sortable: false,
-          value: 'name'
+          value: 'type'
         },
-        {
-          text: 'Preço',
-          align: 'center',
-          sortable: false,
-          value: 'price'
-        },
-             {
-          text: 'Categoria',
-          align: 'center',
-          sortable: false,
-          value: 'idCategory'
-        },
-
         { text: "", value: "actions" },
       ]
     }
   },
   created () {
-    this.getItems ()
+    this.getpayments ()
   },
   methods: {
-    async getItems () {
+    async getpayments () {
       try {
-        this.items = (await this.$api.get(`/items`)).data;
+        this.payments =( await this.$api.get(`/payments`)).data
       } catch (error) {
         this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
       }
     },
 
-    async destroy (items) {
+    async destroy (payments) {
       try {
-        if (confirm(`Deseja deletar ${items.id} - ${items.name}?`)) {
-          let response = await this.$api.post('/items/destroy', { id: items.id });
+        if (confirm(`Deseja deletar ${payments.id} - ${payments.type}?`)) {
+          let response = await this.$api.post(`/payments/destroy`, { id: payments.id })
           this.$toast(response.message)
-          return this.getItems();
+          return this.getpayments();
        }
       } catch (error) {
-         this.$toast.error(`Ocorreu um erro ao deletar a categoria id ${items.id}, contate o administrador`)
+         this.$toast.error(`Ocorreu um erro ao deletar a categoria id ${payments.id}, contate o administrador`)
       }
      },
-    async persist (item) {
+    async persist (payment) {
       try {
-        if(item){
+        if(payment){
           return this.$router.push({
-          name: 'admin-items-persist',
-          params: { id: item.id }
+            name: 'admin-payments-persist',
+            params: { id: payment.id }
         });
         }
         return this.$router.push({
-          name: 'admin-items-persist'
+          name: 'admin-payments-persist'
         });
       } catch (error) {
         this.$toast.error(`Ocorreu um erro ao acessar, contate o administrador`)

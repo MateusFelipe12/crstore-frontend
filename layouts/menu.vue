@@ -69,7 +69,7 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Home',
           to: '/'
         },
         {
@@ -82,6 +82,11 @@ export default {
           title: 'Itens',
           to: '/admin/items'
         }, 
+        {
+          icon: 'mdi-credit-card-outline',
+          title: 'Pagamentos',
+          to: '/admin/payments'
+        },
         {  
           icon: 'mdi-map-marker',
           title: 'Endereços',

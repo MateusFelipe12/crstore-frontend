@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1 style="color:#1aa5f ;">Menu Categorias</h1>
+    <h1 style="color:#1aa5f ;">Menu Pagamentos</h1>
     <hr>
     <v-container>
       <v-row>
@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import { delay } from 'q';
 
 export default {
   layout: 'menu',
