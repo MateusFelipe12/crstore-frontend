@@ -46,7 +46,7 @@
         v-if="nextPass"
         outlined
       />
-            <v-text-field
+      <v-text-field
         v-model="validNewPassword"
         label="Confirme a senha"
         type="password"
@@ -55,92 +55,83 @@
         v-if="nextPass"
         outlined
       />
-      <v-btn
-        v-if="!nextPass"
-        @click="validation()"
-      >Enviar</v-btn>
-      <v-btn
-        v-if="nextPass"
-        @click="updatePassword()"
-      >Enviar</v-btn>
+      <v-btn v-if="!nextPass" @click="validation()">Enviar</v-btn>
+      <v-btn v-if="nextPass" @click="updatePassword()">Enviar</v-btn>
     </v-form>
   </v-container>
 </template>
 
 <script>
 export default {
-  layout: 'default',
-  name: 'updatePasswordPage',
-  data () {
+  layout: "custumer",
+  name: "updatePasswordPage",
+  data() {
     return {
       nextPass: false,
-      username: '',
-      name: '',
-      cpf: '',
-      phone: '',
+      username: "",
+      name: "",
+      cpf: "",
+      phone: "",
       valid: false,
-      newPassword: '',
-      validNewPassword: '',
+      newPassword: "",
+      validNewPassword: "",
       id: 0,
-      rule: [
-        v => !!v || "Campo Obrigatorio"
-      ]
-    }
+      rule: [(v) => !!v || "Campo Obrigatorio"],
+    };
   },
   methods: {
-    async validation () {
+    async validation() {
       try {
-        if(!this.valid) {
-          return this.$toast.error(`Preencha todos os campos!!`)
+        if (!this.valid) {
+          return this.$toast.error(`Preencha todos os campos!!`);
         }
 
         let response = await this.$api.post(`/users/verification`, {
-          username: this.username, 
+          username: this.username,
           name: this.name,
           cpf: this.cpf,
-          phone: this.phone
-        })
-        if(response.type == 'error'){
-          return this.$toast.error(`Algum dos campos nao coincidem com o seu perfil`)
+          phone: this.phone,
+        });
+        if (response.type == "error") {
+          return this.$toast.error(
+            `Algum dos campos nao coincidem com o seu perfil`
+          );
         }
         this.nextPass = true;
-        this.id = response
-        return this.$toast.success(response.message)
-
+        this.id = response;
+        return this.$toast.success(response.message);
       } catch (error) {
         console.log(error.message);
-        return this.$toast.error("Ocorreu um erro, contate o administrador")
+        return this.$toast.error("Ocorreu um erro, contate o administrador");
       }
     },
 
-    async updatePassword (){
+    async updatePassword() {
       try {
-        if(!this.valid){
-          return this.$toast.error(`Preencha todos os campos!!`)
+        if (!this.valid) {
+          return this.$toast.error(`Preencha todos os campos!!`);
         }
-        if(this.newPassword != this.validNewPassword){ 
-          return this.$toast.error(`As senhas nao coincidem`)
+        if (this.newPassword != this.validNewPassword) {
+          return this.$toast.error(`As senhas nao coincidem`);
         }
         let response = await this.$api.post(`/users/newpassword`, {
           password: this.newPassword,
-          id: this.id
-        })
-        if(response.type == 'error') {
-          return this.$toast.error(`Ocorreu um erro ao salvar a nova senha`)
-        } else{
+          id: this.id,
+        });
+        if (response.type == "error") {
+          return this.$toast.error(`Ocorreu um erro ao salvar a nova senha`);
+        } else {
           this.$toast.success(response.message);
-          return this.$router.push('/');
+          return this.$router.push("/");
         }
-
       } catch (error) {
         console.log(error.message);
-        return this.$toast.error("Ocorreu um erro, contate o administrador")
+        return this.$toast.error("Ocorreu um erro, contate o administrador");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>
-
 </style>

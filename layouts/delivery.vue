@@ -28,15 +28,10 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <h3 style="color: #1aa5f">CRStore</h3>
       <v-spacer></v-spacer>
-      <v-btn text to="/users" style="float: right">
+      <v-btn v-if="User === 'Admin'" text to="/admin" style="float: right">
         <v-icon> mdi-account-check </v-icon>
       </v-btn>
-      <v-btn
-        v-if="orders.length > 0"
-        text
-        to="/users/myOrders"
-        style="float: right"
-      >
+      <v-btn text to="/users/myOrders" style="float: right">
         <v-icon> mdi-cart-heart </v-icon>
       </v-btn>
       <v-btn text to="/users/cart" style="float: right">
@@ -62,6 +57,7 @@ export default {
   name: "MenuLayout",
   data() {
     return {
+      User: null,
       clipped: false,
       drawer: false,
       fixed: false,
@@ -71,21 +67,6 @@ export default {
           icon: "mdi-apps",
           title: "Home",
           to: "/",
-        },
-        {
-          icon: "mdi-book-variant",
-          title: "Categorias",
-          to: "/admin/categories",
-        },
-        {
-          icon: "mdi-food",
-          title: "Itens",
-          to: "/admin/items",
-        },
-        {
-          icon: "mdi-credit-card-outline",
-          title: "Pagamentos",
-          to: "/admin/payments",
         },
         {
           icon: "mdi-map-marker",
@@ -107,11 +88,8 @@ export default {
     async validation() {
       try {
         let response = await this.$api.post(`/users/validation/typeuser`);
-        if (response.type != "success") {
-          this.$toast("Você não possui autorização para acessar esse recurso");
-          console.log(response);
-          return this.$router.push("/users");
-        }
+
+        this.User = response.data;
         return this.$toast(response.message);
       } catch (error) {
         console.log(error.message);

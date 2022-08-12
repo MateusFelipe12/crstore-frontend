@@ -1,130 +1,127 @@
 <template>
-  <v-container style="margin:5%; text-align:center">
-    <h1 style="color: dodgerblue;">Seja bem vindo a CRStore</h1>
-   <v-container style="background-color:darkgray ; border-radius:1%; width: 750px">
+  <v-container style="margin: 5%; text-align: center">
+    <h1 style="color: dodgerblue">Seja bem vindo a CRStore</h1>
+    <v-container
+      style="background-color: darkgray; border-radius: 1%; width: 750px"
+    >
       <v-form v-model="valid">
-        <v-container style="width: 600px ;">
-          <br>
-           <v-text-field
-          v-model="login.username"
-          outlined
-          color="black"
-          background-color="black"
-          :rules="rule"
-          placeholder="Usuario"
-          style=": black;"
-        />
-          
-        <v-text-field
-          v-model="login.name"
-          outlined
-          color="black"
-          background-color="black"
-          placeholder="Nome"
-          :rules="rule"
-        />
-        <v-text-field
-          v-model="login.cpf"
-          outlined
-          color="black"
-          v-mask="['###.###.###-##']"
-          background-color="black"
-          placeholder="CPF"
-          :rules="rule"
-        />
-        <v-text-field
-          v-model="login.phone"
-          outlined
-          color="black"
-          v-mask="['(##) #####-####']"
-          background-color="black"
-          placeholder="Telefone"
-          :rules="rule"
-        />
-        <v-text-field
-          v-model="login.password"
-          outlined
-          color="black"
-          type="password"
-          background-color="black"
-          placeholder="Senha"
-          :rules="rule"
-        />
-        <v-text-field
-          v-model="login.validPass"
-          outlined
-          color="black"
-          type="password"
-          background-color="black"
-          placeholder="Confirme sua senha"
-          :rules="rule"
-        />
-        <v-btn 
-        style="width:220px; "
-        color="black"
-        @click="register()"
-        >Enviar</v-btn>
+        <v-container style="width: 600px">
+          <br />
+          <v-text-field
+            v-model="login.username"
+            outlined
+            color="black"
+            background-color="black"
+            :rules="rule"
+            placeholder="Usuario"
+            style=":black "
+          />
+
+          <v-text-field
+            v-model="login.name"
+            outlined
+            color="black"
+            background-color="black"
+            placeholder="Nome"
+            :rules="rule"
+          />
+          <v-text-field
+            v-model="login.cpf"
+            outlined
+            color="black"
+            v-mask="['###.###.###-##']"
+            background-color="black"
+            placeholder="CPF"
+            :rules="rule"
+          />
+          <v-text-field
+            v-model="login.phone"
+            outlined
+            color="black"
+            v-mask="['(##) #####-####']"
+            background-color="black"
+            placeholder="Telefone"
+            :rules="rule"
+          />
+          <v-text-field
+            v-model="login.password"
+            outlined
+            color="black"
+            type="password"
+            background-color="black"
+            placeholder="Senha"
+            :rules="rule"
+          />
+          <v-text-field
+            v-model="login.validPass"
+            outlined
+            color="black"
+            type="password"
+            background-color="black"
+            placeholder="Confirme sua senha"
+            :rules="rule"
+          />
+          <v-btn style="width: 220px" color="black" @click="register()"
+            >Enviar</v-btn
+          >
         </v-container>
       </v-form>
-   </v-container>
+    </v-container>
   </v-container>
 </template>
 
 <script>
 export default {
-  layout: 'login',
-  name: 'IndexPage',
-  data () {
+  layout: "custumer",
+  name: "IndexPage",
+  data() {
     return {
       valid: false,
-      rule: [
-        v => !!v || "Campo obrigatorio"
-      ],
+      rule: [(v) => !!v || "Campo obrigatorio"],
       login: {
-        username: '',
-        name: '',
-        cpf: '', 
-        phone: '',
-        password: '',
-        validPass: '',
-        role: 'Custumer'
+        username: "",
+        name: "",
+        cpf: "",
+        phone: "",
+        password: "",
+        validPass: "",
+        role: "Custumer",
+      },
+    };
   },
-    }
-  },
-  methods:{
-    async register () {
+  methods: {
+    async register() {
       try {
-        if(!this.valid) {
+        if (!this.valid) {
           return this.$toast.error(`Por favor, preencha todos os campos`);
         }
-        if(this.login.password != this.login.validPass){ 
-          return this.$toast.error(`As senhas nao coincidem`)
+        if (this.login.password != this.login.validPass) {
+          return this.$toast.error(`As senhas nao coincidem`);
         }
 
         let response = await this.$api.post(`/users/register`, {
-          username: this.login.username, 
+          username: this.login.username,
           password: this.login.password,
           name: this.login.name,
           cpf: this.login.cpf,
           phone: this.login.phone,
-          role: this.login.rule || 'Custumer' 
-          })
+          role: this.login.rule || "Custumer",
+        });
 
-        if(response.type == "error") {
-          return this.$toast.warning(response.message)
+        if (response.type == "error") {
+          return this.$toast.warning(response.message);
         }
         this.$toast.success(response.message);
-        localStorage.setItem('crstore-token', response.token)
-        return this.$router.push('/');
-
+        localStorage.setItem("crstore-token", response.token);
+        return this.$router.push("/");
       } catch (error) {
         console.log(error.message);
-        return this.$toast.error("Ocorreu um erro, contate o administrador")
+        return this.$toast.error("Ocorreu um erro, contate o administrador");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600&family=Oswald:wght@600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@600&family=Oswald:wght@600&display=swap");
 </style>
