@@ -94,16 +94,27 @@
           ></v-text-field>
           </v-col>
          </v-row>
-          <v-row>
+           <v-row>
             <v-col>
             <v-text-field
-            v-model="address.description"
-            :rules="rule"
-            label="Descrição"
-            placeholder="Descrição"
-            solo
-          ></v-text-field>
-          </v-col>
+              v-model="address.number"
+              :rules="rule"
+              label="Numero"
+              placeholder="Numero"
+              solo
+            ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+              v-model="address.description"
+              :rules="rule"
+              label="Descrição"
+              placeholder="Descrição"
+              solo
+            ></v-text-field>
+            </v-col>
           </v-row>
          <br>
          <v-btn

@@ -138,7 +138,8 @@ created () {
     },
      async getCategories () {
       try {
-        this.categories = await this.$api.get('/category')
+        this.categories = (await this.$api.get('/category')).data
+        console.log( this.categories);
       } catch (error) {
         this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
       }

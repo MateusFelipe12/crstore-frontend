@@ -34,6 +34,14 @@
       <v-spacer></v-spacer>
       <v-btn
       text
+      to="/users/myOrders"
+      style="float: right;">
+        <v-icon>
+          mdi-cart-heart
+        </v-icon>
+      </v-btn>
+      <v-btn
+      text
       to="/users/cart"
       style="float: right;">
         <v-icon>
@@ -66,6 +74,7 @@ export default {
       clipped: false,
       drawer: false,
       fixed: false,
+      orders: [],
       items: [
         {
           icon: 'mdi-apps',
@@ -101,6 +110,7 @@ export default {
   },
   created () {
     this.validation()
+    this.getOrder();
   },
   methods: {
     async validation () {
@@ -117,7 +127,16 @@ export default {
         console.log(error.message);
         return this.$toast('/')
       }
-    },   
+    },
+    async getOrder () {
+    try {
+      let response =  await this.$api.get(`/orders`)
+      this.orders = response.data
+    } catch (error) {
+      console.log(error.message);
+      this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
+    }
+  }
   }
 }
 </script>

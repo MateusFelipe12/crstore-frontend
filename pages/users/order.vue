@@ -1,5 +1,6 @@
 <template>
-  <v-container>
+  <v-conteiner>
+     <v-container>
     <h1 style="color:aquamarine ;">Finalizar compras</h1>
     <hr>
     <br>
@@ -352,7 +353,7 @@
         </v-btn>
       </v-container>
     </v-container>
-  </v-container>
+  </v-conteiner>
 </template>
 
 <script>
@@ -422,22 +423,19 @@ methods: {
   },
   async createOrder () {
     try {
-      console.log(this.addressSelect);
-      array.forEach(element => {
-        
-      });
       let addres = []
       this.addresses.forEach(address => {
         address.id == this.addressSelect ? addres.push(address): null
       })
-      console.log(addres);
-      return
-      this.$api.post(`/orders/persist`, {
+      let response =  await this.$api.post(`/orders/persist`, {
         items: this.items,
-        address: this.addressSelect
+        addres: addres[0],
+        payment: this.paymentSelect
       })
+      console.log(response);
     } catch (error) {
-      
+      console.log(error.message);
+      this.$toast.error(`Ocorreu um erro ao carregar a pagina, contate o administrador`)
     }
   }
 }

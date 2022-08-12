@@ -35,13 +35,13 @@
           {{item.price}}
         </v-card-subtitle>
           <v-card-title>
-          {{item.price * item.quantidade || ' '}}
+          {{item.price * item.quantity || ' '}}
         </v-card-title>
         <v-card-actions>
           <v-text-field
           type="number"
-          v-model="item.quantidade"
-          style="width: 10px;"
+          min="0"
+          v-model="item.quantity"
           />
           <v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer>
           <v-btn
@@ -86,7 +86,7 @@ methods: {
       if(!item) {
         return this.$toast.error(`Informe o item que deseja adicionar ao carrinho`)
       }
-      item.quantidade = item.quantidade ? item.quantidade : 1;
+      item.quantity = item.quantity ? item.quantity : "1";
       let response = await this.$api.post(`/cart/persist`, { items: item })
       return this.$toast.success(`O ${item.name} foi adicionado ao carrinho`)
     } catch (error) {

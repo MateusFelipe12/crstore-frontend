@@ -27,14 +27,16 @@
           {{item[3]}}
         </v-card-subtitle>
         <v-card-title>
-          {{item[3] * item[7] || ''}}
+          {{(item[3] * item[7]).toFixed(2) || ''}}
         </v-card-title>
         <v-card-actions>
           <v-text-field
-          type="number"
-          v-model="item[7]"
-          style="width: 10px;"
-          @click="addItem(item)"
+            type="number"
+            min="0"
+            v-model="item[4]"
+            @click="addItem(item)"
+            style="width: 10px;"
+            
           />
           <v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer>
           <v-btn
@@ -82,8 +84,8 @@ methods: {
       if(cart.type == 'error'){
         this.$toast.warning(cart.message)
       }
-      
       let items = cart.items
+      console.log(items);
       let response  = [];
       this.total = 0;
       items.forEach(item => {
